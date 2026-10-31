@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>Electricity Bill Calculator</title>
+<style>
+.error {
+color: red;
+}
+table {
+margin: 0 auto;
+border-collapse: collapse;
+width: 50%;
+}
+input {
+width: 100%;
+padding: 8px;
+margin: 5px 0;
+}
+input[type="submit"] {
+background-color: #050505;
+color: white;
+border: none;
+}
+.result {
+text-align: center;
+margin-top: 20px;
+font-size: 18px;
+}
+</style>
+</head>
+<body>
+<?php
+$nameErr = $unitsErr = $consumerNoErr = "";
+$name = $units = $consumerNo = "";
+$bill = 0;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (empty($_POST["name"])) {
+$nameErr = "Name is required";
+} else {
+$name = htmlspecialchars(trim($_POST["name"]));
+}
+if (empty($_POST["units"])) {
+$unitsErr = "Units consumed is required";
+} elseif (!is_numeric($_POST["units"]) || $_POST["units"] < 0) {
+$unitsErr = "Please enter a valid number of units";
+} else {
+$units = (int)$_POST["units"];
+}
+if (empty($_POST["consumerNo"])) {
+$consumerNoErr = "Consumer number is required";
+} elseif (!is_numeric($_POST["consumerNo"]) || strlen($_POST["consumerNo"])
+< 5) {
+$consumerNoErr = "Please enter a valid consumer number (at least 5 digits)";
+} else {
+$consumerNo = htmlspecialchars(trim($_POST["consumerNo"]));
+}
+if (empty($nameErr) && empty($unitsErr) && empty($consumerNoErr)) {
+if ($units <= 100) {
+$bill = $units * 5;
+} elseif ($units <= 200) {
+$bill = (100 * 5) + (($units - 100) * 7.5);
+} else {
+$bill = (100 * 5) + (100 * 7.5) + (($units - 200) * 10);
+}
+}
+}
+?>
+<h2 style="text-align:center;">Electricity Bill Calculator</h2>
+<form method="post" action="" style="max-width: 400px; margin: auto;">
+<label for="consumerNo">Consumer Number:</label>
+<input type="text" name="consumerNo" value="<?php echo $consumerNo; ?>">
+<span class="error"><?php echo $consumerNoErr; ?></span>
+<label for="name">Consumer Name:</label>
+<input type="text" name="name" value="<?php echo $name; ?>">
+<span class="error"><?php echo $nameErr; ?></span>
+<label for="units">Units Consumed:</label>
+<input type="number" name="units" value="<?php echo $units; ?>">
+<span class="error"><?php echo $unitsErr; ?></span>
+<input type="submit" value="Calculate Bill">
+</form>
+<?php if ($bill > 0): ?>
+<div class="result">
+<h3>Electricity Bill for Consumer No: <?php echo $consumerNo; ?> (<?php echo
+$name; ?>):</h3>
+<p><strong>Units Consumed:</strong> <?php echo $units; ?></p>
+<p><strong>Total Amount:</strong> Rs. <?php echo $bill; ?></p>
+</div>
+<?php endif?>
+</body>
+</html>

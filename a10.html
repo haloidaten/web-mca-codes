@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Hover</title>
+
+    <style>
+        .content {
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+            margin: 4em;
+            padding: 20px;
+            text-align: center;
+        }
+
+        img {
+            width: 100%;
+            height: 50%;
+            object-fit: cover;
+        }
+
+        #heading1,
+        #heading2 {
+            text-align: center;
+        }
+
+        #heading2 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="content" id="content">
+
+        <img src="img1.jpg" id="image" alt="Image">
+
+        <div class="data">
+            <h1 id="heading1">Hover mouse here.....</h1>
+            <h1 id="heading2">Hi hello world......</h1>
+        </div>
+
+    </div>
+
+    <script>
+
+        document.getElementById("content")
+            .addEventListener("mouseover", change1);
+
+        document.getElementById("content")
+            .addEventListener("mouseout", change2);
+
+        function change1() {
+            document.getElementById("image").src = "img1.jpg";
+            document.getElementById("heading1").style.display = "none";
+            document.getElementById("heading2").style.display = "block";
+        }
+
+        function change2() {
+            document.getElementById("image").src = "1mg2.jpg";
+            document.getElementById("heading1").style.display = "block";
+            document.getElementById("heading2").style.display = "none";
+        }
+
+    </script>
+
+</body>
+</html>

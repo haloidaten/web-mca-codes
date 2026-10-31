@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+
+    <style>
+        body {
+            background-color: #146a8b;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #000000;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        #month {
+            width: 150px;
+        }
+
+        #btn {
+            background-color: #4a618a;
+            color: white;
+            padding: 9px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #btn:hover {
+            background-color: #35496d;
+        }
+
+        #calendarContainer {
+            width: 90%;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        td,
+        th {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #7ab2d3;
+        }
+
+        .header {
+            background-color: #4a618a;
+            color: white;
+        }
+
+        td {
+            background-color: white;
+        }
+
+        td:hover {
+            background-color: #e8f1f7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <center>
+        <h1>Generate Calendar</h1>
+
+        <form id="calendarForm">
+            <input
+                type="number"
+                id="year"
+                name="year"
+                placeholder="Year"
+                required
+            >
+
+            <input
+                type="number"
+                id="month"
+                name="month"
+                placeholder="Month (1-12)"
+                min="1"
+                max="12"
+                required
+            >
+
+            <button type="submit" id="btn">
+                Generate Calendar
+            </button>
+        </form>
+    </center>
+
+    <div id="calendarContainer"></div>
+
+    <script>
+        document
+            .getElementById("calendarForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                const year = parseInt(
+                    document.getElementById("year").value
+                );
+
+                const month = parseInt(
+                    document.getElementById("month").value
+                ) - 1;
+
+                if (
+                    isNaN(year) ||
+                    isNaN(month) ||
+                    month < 0 ||
+                    month > 11
+                ) {
+                    alert("Please enter a valid year and month.");
+                    return;
+                }
+
+                const firstDay = new Date(
+                    year,
+                    month,
+                    1
+                ).getDay();
+
+                const numDays = new Date(
+                    year,
+                    month + 1,
+                    0
+                ).getDate();
+
+                let calendarHTML = "<table>";
+
+                calendarHTML += "<thead>";
+                calendarHTML += '<tr class="header">';
+                calendarHTML += "<th>Sun</th>";
+                calendarHTML += "<th>Mon</th>";
+                calendarHTML += "<th>Tue</th>";
+                calendarHTML += "<th>Wed</th>";
+                calendarHTML += "<th>Thu</th>";
+                calendarHTML += "<th>Fri</th>";
+                calendarHTML += "<th>Sat</th>";
+                calendarHTML += "</tr>";
+                calendarHTML += "</thead>";
+
+                calendarHTML += "<tbody>";
+
+                let day = 1;
+
+                for (let i = 0; i < 6; i++) {
+
+                    calendarHTML += "<tr>";
+
+                    for (let j = 0; j < 7; j++) {
+
+                        if (i === 0 && j < firstDay) {
+                            calendarHTML += "<td></td>";
+                        } else if (day > numDays) {
+                            calendarHTML += "<td></td>";
+                        } else {
+                            calendarHTML += `<td>${day}</td>`;
+                            day++;
+                        }
+                    }
+
+                    calendarHTML += "</tr>";
+
+                    if (day > numDays) {
+                        break;
+                    }
+                }
+
+                calendarHTML += "</tbody>";
+                calendarHTML += "</table>";
+
+                document.getElementById(
+                    "calendarContainer"
+                ).innerHTML = calendarHTML;
+            });
+    </script>
+
+</body>
+
+</html>
